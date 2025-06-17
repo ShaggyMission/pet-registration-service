@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Pet Registration API
+  version: 1.0.0
+  description: API for registering rescued pets
+
+paths:
+  /api/pets:
+    post:
+      summary: Register a new pet
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                breed:
+                  type: string
+                age:
+                  type: integer
+                healthStatus:
+                  type: string
+                  enum: [Good, Fair, Delicate]
+                description:
+                  type: string
+                location:
+                  type: string
+                images:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Pet successfully registered
+        '500':
+          description: Server error
