@@ -2,40 +2,143 @@ openapi: 3.0.0
 info:
   title: Pet Registration API
   version: 1.0.0
-  description: API for registering rescued pets
-
+  description: >
+    This API allows users to register new pets by providing their information.  
+    **All fields marked with a red asterisk (*) are required.**  
+    If any required field is missing or invalid, the server will respond with a `400 Bad Request` error.  
+    The system automatically assigns timestamps for creation and updates.
 paths:
-  /api/pets:
+  /register/pet:
     post:
       summary: Register a new pet
+      description: >
+        Creates a new pet record with the provided details.  
+        The pet information is stored in MongoDB with automatic timestamp generation.  
+        Health status defaults to "Good" if not specified.
       tags:
-        - Pets
+        - Pet
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - name
               properties:
                 name:
                   type: string
+                  example: "Buddy"
+                  description: The pet's name. **Required.** Cannot be empty.
                 breed:
                   type: string
+                  example: "Golden Retriever"
+                  description: >
+                    The pet's breed. Optional field.  
+                    Can specify any breed or mixed breed information.
                 age:
-                  type: integer
+                  type: number
+                  minimum: 0
+                  example: 3
+                  description: >
+                    The pet's age in years. Optional field.  
+                    Must be a non-negative number if provided.
                 healthStatus:
                   type: string
-                  enum: [Good, Fair, Delicate]
+                  enum: ["Good", "Fair", "Delicate"]
+                  default: "Good"
+                  example: "Good"
+                  description: >
+                    The pet's current health condition. Optional field.  
+                    Defaults to "Good" if not specified.  
+                    Must be one of: Good, Fair, or Delicate.
                 description:
                   type: string
+                  example: "Friendly and energetic dog, loves playing fetch"
+                  description: >
+                    Additional description or notes about the pet. Optional field.  
+                    Can include personality traits, special needs, or other relevant information.
                 location:
                   type: string
+                  example: "Quito, Ecuador"
+                  description: >
+                    The pet's current location. Optional field.  
+                    Useful for adoption or care services.
                 images:
                   type: array
                   items:
                     type: string
+                    format: uri
+                  example: 
+                    - "https://example.com/images/buddy1.jpg"
+                    - "https://example.com/images/buddy2.jpg"
+                  description: >
+                    Array of image URLs for the pet. Optional field.  
+                    Each URL should point to a valid image resource.
       responses:
         '201':
-          description: Pet successfully registered
+          description: Pet registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: "64f8b2a1c3d4e5f6a7b8c9d0"
+                    description: The unique identifier for the registered pet
+                  name:
+                    type: string
+                    example: "Buddy"
+                  breed:
+                    type: string
+                    example: "Golden Retriever"
+                  age:
+                    type: number
+                    example: 3
+                  healthStatus:
+                    type: string
+                    example: "Good"
+                  description:
+                    type: string
+                    example: "Friendly and energetic dog, loves playing fetch"
+                  location:
+                    type: string
+                    example: "Quito, Ecuador"
+                  images:
+                    type: array
+                    items:
+                      type: string
+                    example: 
+                      - "https://example.com/images/buddy1.jpg"
+                      - "https://example.com/images/buddy2.jpg"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-06-21T10:30:00.000Z"
+                    description: Timestamp when the pet was registered
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-06-21T10:30:00.000Z"
+                    description: Timestamp when the pet information was last updated
+        '400':
+          description: Bad Request – Missing or invalid fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Pet validation failed: name: Path `name` is required."
         '500':
-          description: Server error
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Database connection error"
