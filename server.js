@@ -5,16 +5,18 @@ const petRoutes = require('./routes/pet.routes');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const path = require('path');
+const cors = require('cors'); 
 
 dotenv.config();
 
 const app = express();
+app.use(cors()); 
 app.use(express.json());
 
 const swaggerDocument = YAML.load(path.join(__dirname, './docs/swagger.yaml'));
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/register/pets-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/api/pets', petRoutes);
+app.use('/register', petRoutes);
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
