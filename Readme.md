@@ -40,7 +40,7 @@ The **Pet Registration Service** is a core microservice in the Shaggy Mission pl
 ## 📡 API Endpoints
 
 ### Pet Registration Endpoint
-**`POST /register`**
+**`POST /pets/register`**
 - Registers a new pet in the rescue system
 - Validates required fields and data types
 - Returns complete pet profile with generated timestamps
