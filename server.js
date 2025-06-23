@@ -16,7 +16,7 @@ app.use(express.json());
 const swaggerDocument = YAML.load(path.join(__dirname, './docs/swagger.yaml'));
 app.use('/register/pets-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/register', petRoutes);
+app.use('/pets', petRoutes);
 
 const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
