@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles",
     "start": "node server.js"
   },
   "keywords": [],
@@ -21,5 +21,10 @@
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^30.0.3",
+    "mongodb-memory-server": "^10.1.4",
+    "supertest": "^7.1.1"
+  }
 }
